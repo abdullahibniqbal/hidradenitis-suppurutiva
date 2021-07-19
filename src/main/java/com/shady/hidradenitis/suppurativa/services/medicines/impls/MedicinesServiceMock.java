@@ -1,24 +1,24 @@
 package com.shady.hidradenitis.suppurativa.services.medicines.impls;
 
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+
+import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
 import com.shady.hidradenitis.suppurativa.aggregates.medicines.MedicinesAggregate;
 import com.shady.hidradenitis.suppurativa.domain.Quantity;
-import com.shady.hidradenitis.suppurativa.domain.doctors.Doctor;
-import com.shady.hidradenitis.suppurativa.domain.hospitals.Hospital;
 import com.shady.hidradenitis.suppurativa.domain.medicines.Medicine;
 import com.shady.hidradenitis.suppurativa.domain.medicines.Tablet;
-import com.shady.hidradenitis.suppurativa.domain.medicines.prescriptions.AmountAtTimeOfDay;
 import com.shady.hidradenitis.suppurativa.domain.medicines.prescriptions.PrescribedMedicine;
 import com.shady.hidradenitis.suppurativa.domain.medicines.prescriptions.Prescription;
 import com.shady.hidradenitis.suppurativa.services.medicines.MedicinesService;
 
 @Service
 public class MedicinesServiceMock implements MedicinesService {
+	@Resource(name = "mockPrescription")
+	private Prescription prescription;
 
 	@Override
 	public MedicinesAggregate getMedicines() {
@@ -34,29 +34,23 @@ public class MedicinesServiceMock implements MedicinesService {
 
 	@Override
 	public MedicinesAggregate getPrescriptions() {
-		Prescription prescription = new Prescription();
-		prescription.creationDate = new Date();
-		prescription.doctor = new Doctor("Rizwan Akram", 30);
-		prescription.hospital = new Hospital("Agha Khan");
-		
-		PrescribedMedicine danzen = new PrescribedMedicine();
-		danzen.medicine = new Tablet("Danzen", new Quantity(50f, "mg"));
-		danzen.timesOfDay.add(new AmountAtTimeOfDay("Morning", new Quantity(1f, "tablet")));
-		danzen.timesOfDay.add(new AmountAtTimeOfDay("Night", new Quantity(1f, "tablet")));
-		danzen.prescribeTillDays(7);
-		
-		PrescribedMedicine lasix = new PrescribedMedicine();
-		lasix.medicine = new Tablet("Lasix", new Quantity(20f, "mg"));
-		lasix.timesOfDay.add(new AmountAtTimeOfDay("Morning", new Quantity(1f, "tablet")));
-		lasix.timesOfDay.add(new AmountAtTimeOfDay("Night", new Quantity(1f, "tablet")));
-		lasix.prescribeTillDays(7);
-		
-		prescription.addPrescribedMedcine(danzen);
-		prescription.addPrescribedMedcine(lasix);
-		
 		MedicinesAggregate medicinesAggregate = new MedicinesAggregate();
 		medicinesAggregate.prescription = prescription;
 		
 		return medicinesAggregate;
+	}
+
+	@Override
+	public MedicinesAggregate updatePrescription(PrescribedMedicine prescribedMedicine) {
+		prescription.updatePrescribedMedicine(prescribedMedicine);
+		
+		return new MedicinesAggregate(prescription);
+	}
+
+	@Override
+	public MedicinesAggregate addToPrescription(PrescribedMedicine prescribedMedicine) {
+		prescription.addPrescribedMedcine(prescribedMedicine);
+		
+		return new MedicinesAggregate(prescription);
 	}
 }

@@ -29,4 +29,18 @@ public class Prescription {
 	public List<PrescribedMedicine> getPrescribedMedicines() {
 		return prescribedMedicines;
 	}
+	
+	public void updatePrescribedMedicine(PrescribedMedicine newPrescribedMedicine) {
+		prescribedMedicines = 
+				prescribedMedicines
+				.stream()
+				.map(prescribedMedicine -> mapper(prescribedMedicine, newPrescribedMedicine))
+				.collect(Collectors.toList());
+	}
+	
+	public PrescribedMedicine mapper(PrescribedMedicine old, PrescribedMedicine toUpdate) {
+		return old.medicine.name.equals(toUpdate.medicine.name)?
+				toUpdate:
+				old;
+	}
 }

@@ -13,4 +13,14 @@ import com.shady.hidradenitis.suppurativa.domain.medicines.prescriptions.Prescri
 public class MedicinesAggregate {
 	public List<Medicine> medicines;
 	public Prescription prescription;
+	
+	public MedicinesAggregate(List<Medicine> medicines) {
+		this.medicines = medicines;
+	}
+	
+	public MedicinesAggregate(Prescription prescription) {
+		this.prescription = prescription;
+	}
+	
+	public MedicinesAggregate() {}
 }
