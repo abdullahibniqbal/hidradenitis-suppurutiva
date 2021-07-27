@@ -6,5 +6,5 @@ import java.util.Map;
 
 public interface PayloadMapper {
     Map<String, Object> map(Payload payload);
-    Payload map(String base64EncodedPayload);
+    Payload map(String base64EncodedPayload, Class<? extends Payload> type);
 }

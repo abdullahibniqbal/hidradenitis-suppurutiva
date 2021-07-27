@@ -1,9 +1,7 @@
 package com.shady.hidradenitis.suppurutiva.mappers;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shady.hidradenitis.suppurutiva.auth.Payload;
-import com.shady.hidradenitis.suppurutiva.auth.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -30,13 +28,15 @@ public class PayloadMapperImpl implements PayloadMapper {
     }
 
     @Override
-    public Payload map(String base64EncodedPayload) {
-        User user = null;
+    public Payload map(String jsonPayload, Class<? extends Payload> type) {
+         Payload payload = null;
         try {
-            user = objectMapper.readValue(base64EncodedPayload, User.class);
+            payload = objectMapper.readValue(jsonPayload, type);
         } catch(Exception e) {
             e.printStackTrace();
+
+            throw new IllegalArgumentException();
         }
-        return user;
+        return payload;
     }
 }

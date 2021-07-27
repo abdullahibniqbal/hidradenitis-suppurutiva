@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.shady.hidradenitis.suppurutiva.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,8 @@ public class MedicinesServiceMock implements MedicinesService {
 	@Lazy
 	@Autowired
 	private List<Medicine> medicines;
+
+	private UserRepository repository;
 
 	@Override
 	public MedicinesAggregate getMedicines() {
